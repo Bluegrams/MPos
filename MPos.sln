@@ -9,6 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Changelog.md = Changelog.md
 		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{B13BC766-FE8D-47A7-8BFE-B95F6F636DFD}"
+	ProjectSection(SolutionItems) = preProject
+		img\mpos_views_small.png = img\mpos_views_small.png
 	EndProjectSection
 EndProject
 Global
@@ -24,6 +30,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B13BC766-FE8D-47A7-8BFE-B95F6F636DFD} = {838DB1C2-9AC4-4BDD-8B54-C2EA9E2BDA35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F313FFDD-0B26-41FA-8664-4A44F79BEF0B}
