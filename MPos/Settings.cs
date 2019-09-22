@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace MPos
 {
@@ -40,10 +41,6 @@ namespace MPos
         /// <summary>
         /// Specifies the global shortcut keys to copy/ log the current position.
         /// </summary>
-        public KeyCombination ShortcutKey { get; set; } = new KeyCombination()
-        {
-            Modifiers = ModifierKeys.Ctrl | ModifierKeys.Alt,
-            Key = System.Windows.Forms.Keys.X
-        };
+        public Keys ShortcutKey { get; set; } = Keys.Control | Keys.Alt | Keys.X;
     }
 }

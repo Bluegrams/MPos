@@ -6,7 +6,7 @@ using Bluegrams.Application.Attributes;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MPos - Mouse Position Tracker")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("MPos - Mouse Position Tracker")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bluegrams")]
 [assembly: AssemblyProduct("MPos")]
@@ -14,8 +14,8 @@ using Bluegrams.Application.Attributes;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+[assembly: AppPortable(true)]
 [assembly: ProductWebsite("https://mpos.sourceforge.io")]
-[assembly: ProductColor(16, 16, 16)]
 [assembly: ProductLicense("LICENSE.txt", "BSD-3-Clause")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

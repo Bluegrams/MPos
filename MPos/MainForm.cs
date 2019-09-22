@@ -5,17 +5,20 @@ using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
 using System.Linq;
-using Bluegrams.Application.WinForms;
 using MPos.Controls;
+using Bluegrams.Windows.Tools;
+using Bluegrams.Application;
+using Bluegrams.Application.WinForms;
 
 namespace MPos
 {
     public partial class MainForm : DragSnapForm
     {
-        private MiniAppManager manager;
+        private WinFormsWindowManager manager;
+        private IUpdateChecker updateChecker;
         private Timer timer;
-        // Handles global shortcut setup.
-        private WinHotKeys hotKeys;
+        // Global shortcut
+        private GlobalHotKey hotKey;
         // Custom color table to support different themes.
         private CustomColorTable colorTable;
         // The currently used DPI value for per-monitor scaling.
@@ -43,6 +46,7 @@ namespace MPos
             Settings = new Settings();
             Position = new PositionData();
             initManager();
+            updateChecker = new WinFormsUpdateChecker(Program.UpdateCheckUrl, this);
             InitializeComponent();
             initControls();
             this.KeyPreview = true;
@@ -58,11 +62,12 @@ namespace MPos
 
         private void initManager()
         {
-            // Initialize MiniAppManager
-            manager = new MiniAppManager(this, true);
-            manager.AddManagedProperty(nameof(Settings));
-            manager.AddManagedProperties(nameof(Opacity), nameof(ShowInTaskbar),
-                nameof(CapturingInterval), nameof(TopMost));
+            manager = new WinFormsWindowManager(this);
+            manager.ManageDefault();
+            manager.Manage(nameof(Settings), nameof(TopMost));
+            manager.Manage(nameof(Opacity), 1);
+            manager.Manage(nameof(ShowInTaskbar), true);
+            manager.Manage(nameof(CapturingInterval), 50);
             manager.Initialize();
         }
 
@@ -90,22 +95,14 @@ namespace MPos
             if (Settings.Capturing) timer.Start();
             butStart.Text = Settings.Capturing ? "Stop" : "Start";
             restoreUI(dpiValue / 96.0f);
-            hotKeys = new WinHotKeys(this.Handle);
             setNewHotKey(Settings.ShortcutKey);
+            updateChecker.CheckForUpdates();
         }
 
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)
             {
-                // --- Check if hotkey was pressed ---
-                case WinHotKeys.WM_HOTKEY:
-                    KeyCombination keys = WinHotKeys.GetHotKeyCombination(ref m);
-                    if (keys != null)
-                    {
-                        addPositionToLog();
-                    }
-                    break;
                 // --- Check of DPI of monitor changed ---
                 // WM_DPICHANGED = 0x02E0 (>= Win 8.1)
                 case 0x02E0:
@@ -142,7 +139,7 @@ namespace MPos
             timer.Stop();
             notifyIcon.Visible = false;
             notifyIcon.Dispose();
-            hotKeys.Dispose();
+            hotKey?.Dispose();
         }
 
         #region Scaling
@@ -230,11 +227,11 @@ namespace MPos
             {
                 try
                 {
-                    g.CopyFromScreen(point.X, point.Y, 0, 0, new System.Drawing.Size(1, 1));
+                    g.CopyFromScreen(point.X, point.Y, 0, 0, new Size(1, 1));
                 }
                 catch { }
             }
-            System.Drawing.Color color = bmp.GetPixel(0, 0);
+            Color color = bmp.GetPixel(0, 0);
             bmp.Dispose();
             return Color.FromArgb(color.R, color.G, color.B);
         }
@@ -346,7 +343,6 @@ namespace MPos
         // Load all current settings when opening menu.
         private void contextMain_Opening(object sender, CancelEventArgs e)
         {
-            conLog.ShortcutKeyDisplayString = Settings.ShortcutKey.ToString();
             conTopmost.Checked = TopMost;
             conDarkMode.Checked = Settings.DarkMode;
             conMenuVisible.Checked = Settings.MenuVisible;
@@ -384,11 +380,7 @@ namespace MPos
 
         private void conShowInTaskbar_Click(object sender, EventArgs e)
         {
-            hotKeys.UnregisterHotKey(0);
             ShowInTaskbar = !ShowInTaskbar;
-            // Need to reset hotkey after ShowInTaskbar changed
-            hotKeys = new WinHotKeys(this.Handle);
-            setNewHotKey(Settings.ShortcutKey);
         }
 
         private void conDarkMode_Click(object sender, EventArgs e)
@@ -406,7 +398,10 @@ namespace MPos
         {
             var resMan = new ResourceManager(this.GetType());
             var img = ((Icon)resMan.GetObject("$this.Icon")).ToBitmap();
-            manager.ShowAboutBox(img);
+            AboutForm aboutForm = new AboutForm(img);
+            aboutForm.UpdateChecker = updateChecker;
+            aboutForm.AccentColor = Color.FromArgb(16, 16, 16);
+            aboutForm.ShowDialog();
         }
 
         private void conExit_Click(object sender, EventArgs e) => this.Close();
@@ -447,14 +442,17 @@ namespace MPos
         /// <summary>
         /// Sets a new key combination as global shortcut for grabbing the current position.
         /// </summary>
-        private void setNewHotKey(KeyCombination combination)
+        private void setNewHotKey(Keys keys)
         {
-            Settings.ShortcutKey = combination;
-            hotKeys.UnregisterHotKey(0);
+            hotKey?.Dispose();
+            Settings.ShortcutKey = keys;
+            KeyCombination combination = (KeyCombination)keys;
             try
             {
-                hotKeys.RegisterHotKey(Settings.ShortcutKey);
-                lblHelp.Text = String.Format("Press {0} to capture a position.", Settings.ShortcutKey);
+                hotKey = new GlobalHotKey(combination, (k) => addPositionToLog());
+                hotKey.Register();
+                lblHelp.Text = String.Format("Press {0} to capture a position.", combination);
+                conLog.ShortcutKeyDisplayString = combination.ToString();
             }
             catch (InvalidOperationException)
             {

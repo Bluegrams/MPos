@@ -5,9 +5,8 @@ namespace MPos
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        internal const string UpdateCheckUrl = "https://mpos.sourceforge.io/update.xml";
+
         [STAThread]
         static void Main()
         {
