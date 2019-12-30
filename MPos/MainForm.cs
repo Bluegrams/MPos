@@ -191,8 +191,9 @@ namespace MPos
             if (Settings.PositionLogVisible) height += lstPositions.Height;
             if (Settings.RelativeVisible) height += lineHeight;
             if (Settings.ScaledVisible) height += lineHeight;
-            if (Settings.PixelColorVisible) height += lineHeight;
             if (Settings.DpiVisible) height += lineHeight;
+            if (Settings.ScreenResolutionVisible) height += lineHeight;
+            if (Settings.PixelColorVisible) height += lineHeight;
             this.Height = height;
             panMenu.Visible = Settings.MenuVisible;
             lstPositions.Visible = Settings.PositionLogVisible;
@@ -203,39 +204,22 @@ namespace MPos
 
         private void Timer_Tick(object sender, EventArgs e) => updatePosition();
 
+        private void updatePosition() => updatePosition(new PositionData(MousePosition));
+
         /// <summary>
         /// The method that determines all wanted values and that is called in every tick.
         /// </summary>
-        private void updatePosition()
+        private void updatePosition(PositionData positionData)
         {
             // Update position.
-            Position.Update(MousePosition);
-            // Determine color at mouse position.
-            Position.PixelColor = GetPixelColor((WinPoint)Position.PhysicalPosition);
+            Position = positionData;
             // Update coordinates in title.
             this.Text = String.Format("MPos | X: {0} Y: {1}", Position.PhysicalPosition.X, Position.PhysicalPosition.Y);
             // Attempt to redraw panel.
             panDraw.Invalidate();
         }
 
-        /// <summary>
-        /// Returns the color of the pixel at the mouse's position.
-        /// </summary>
-        private Color GetPixelColor(WinPoint point)
-        {
-            Bitmap bmp = new Bitmap(1, 1);
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                try
-                {
-                    g.CopyFromScreen(point.X, point.Y, 0, 0, new Size(1, 1));
-                }
-                catch { }
-            }
-            Color color = bmp.GetPixel(0, 0);
-            bmp.Dispose();
-            return Color.FromArgb(color.R, color.G, color.B);
-        }
+        
 
         /// <summary>
         /// Called when panel with position data needs to be updated.
@@ -274,6 +258,12 @@ namespace MPos
                         f, b, w3, paddTop + (i + 1) * lineHeight);
                     i += 2;
                 }
+                if (Settings.ScreenResolutionVisible)
+                {
+                    g.DrawString("Resolution", f, b, paddLeft, paddTop + i * lineHeight);
+                    g.DrawString(formatSize(Position.ScreenResolution), f, b, w3, paddTop + i * lineHeight);
+                    i++;
+                }
                 if (Settings.PixelColorVisible)
                 {
                     Color col = Position.PixelColor;
@@ -284,6 +274,7 @@ namespace MPos
         }
 
         private string formatPoint(Point pt) => String.Format("X: {0,-10}Y: {1,-10}", pt.X, pt.Y);
+        private string formatSize(Size pt) => String.Format("{0} x {1}", pt.Width, pt.Height);
 
         /// <summary>
         /// Applies the theme currently set in the settings to all controls.
@@ -329,7 +320,7 @@ namespace MPos
         {
             if (!Settings.Capturing) updatePosition();
             lblHelp.Visible = false;
-            lstPositions.Items.Add(Position.ToString());
+            lstPositions.Items.Add(Position);
             // Select newly added element.
             lstPositions.SelectedIndex = lstPositions.Items.Count - 1;
             // Show position list box if not visible.
@@ -358,6 +349,7 @@ namespace MPos
             conShowScaled.Checked = Settings.ScaledVisible;
             conShowRelative.Checked = Settings.RelativeVisible;
             conShowDpi.Checked = Settings.DpiVisible;
+            conShowResolution.Checked = Settings.ScreenResolutionVisible;
             conShowColor.Checked = Settings.PixelColorVisible;
         }
 
@@ -407,6 +399,7 @@ namespace MPos
             AboutForm aboutForm = new AboutForm(img);
             aboutForm.UpdateChecker = updateChecker;
             aboutForm.AccentColor = Color.FromArgb(16, 16, 16);
+            aboutForm.TopMost = this.TopMost;
             aboutForm.ShowDialog();
         }
 
@@ -510,6 +503,15 @@ namespace MPos
         private void lstPositions_VisibleChanged(object sender, EventArgs e)
         {
             if (lstPositions.Visible && lstPositions.Items.Count < 1) lblHelp.Visible = true;
+        }
+
+        private void lstPositions_Click(object sender, EventArgs e)
+        {
+            // set shown data to selected item from list
+            if (!Settings.Capturing && lstPositions.SelectedItem != null)
+            {
+                updatePosition((PositionData)lstPositions.SelectedItem);
+            }
         }
         #endregion
     }

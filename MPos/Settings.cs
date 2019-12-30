@@ -19,6 +19,10 @@ namespace MPos
         /// </summary>
         public bool DpiVisible { get; set; } = true;
         /// <summary>
+        /// Determines if the screen resolution should be displayed.
+        /// </summary>
+        public bool ScreenResolutionVisible { get; set; } = true;
+        /// <summary>
         /// Determines if the pixel color should be displayed.
         /// </summary>
         public bool PixelColorVisible { get; set; } = true;

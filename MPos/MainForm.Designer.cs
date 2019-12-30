@@ -41,7 +41,9 @@
             this.conShowScaled = new System.Windows.Forms.ToolStripMenuItem();
             this.conShowRelative = new System.Windows.Forms.ToolStripMenuItem();
             this.conShowDpi = new System.Windows.Forms.ToolStripMenuItem();
+            this.conShowResolution = new System.Windows.Forms.ToolStripMenuItem();
             this.conShowColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.conShownData = new System.Windows.Forms.ToolStripMenuItem();
             this.lstPositions = new System.Windows.Forms.ListBox();
             this.contextList = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.conPositionsCopy = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +56,6 @@
             this.contextMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.conStart = new System.Windows.Forms.ToolStripMenuItem();
             this.conLog = new System.Windows.Forms.ToolStripMenuItem();
-            this.conShownData = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.conTopmost = new System.Windows.Forms.ToolStripMenuItem();
             this.conMenuVisible = new System.Windows.Forms.ToolStripMenuItem();
@@ -142,9 +143,11 @@
             this.conShowScaled,
             this.conShowRelative,
             this.conShowDpi,
+            this.conShowResolution,
             this.conShowColor});
             this.contextView.Name = "contextView";
-            this.contextView.Size = new System.Drawing.Size(201, 92);
+            this.contextView.OwnerItem = this.menuView;
+            this.contextView.Size = new System.Drawing.Size(201, 114);
             this.contextView.Opening += new System.ComponentModel.CancelEventHandler(this.contextView_Opening);
             // 
             // conShowScaled
@@ -171,6 +174,14 @@
             this.conShowDpi.Text = "Dpi Information";
             this.conShowDpi.Click += new System.EventHandler(this.shownDataItem_Click);
             // 
+            // conShowResolution
+            // 
+            this.conShowResolution.Name = "conShowResolution";
+            this.conShowResolution.Size = new System.Drawing.Size(200, 22);
+            this.conShowResolution.Tag = "ScreenResolution";
+            this.conShowResolution.Text = "Screen Resolution";
+            this.conShowResolution.Click += new System.EventHandler(this.shownDataItem_Click);
+            // 
             // conShowColor
             // 
             this.conShowColor.Name = "conShowColor";
@@ -178,6 +189,13 @@
             this.conShowColor.Tag = "PixelColor";
             this.conShowColor.Text = "Color at Cursor Position";
             this.conShowColor.Click += new System.EventHandler(this.shownDataItem_Click);
+            // 
+            // conShownData
+            // 
+            this.conShownData.DropDown = this.contextView;
+            this.conShownData.Name = "conShownData";
+            this.conShownData.Size = new System.Drawing.Size(186, 22);
+            this.conShownData.Text = "Shown Data";
             // 
             // lstPositions
             // 
@@ -190,6 +208,7 @@
             this.lstPositions.Name = "lstPositions";
             this.lstPositions.Size = new System.Drawing.Size(220, 56);
             this.lstPositions.TabIndex = 1;
+            this.lstPositions.Click += new System.EventHandler(this.lstPositions_Click);
             this.lstPositions.LocationChanged += new System.EventHandler(this.lstPositions_LocationChanged);
             this.lstPositions.VisibleChanged += new System.EventHandler(this.lstPositions_VisibleChanged);
             // 
@@ -286,7 +305,7 @@
             this.contextMain.Name = "contextMain";
             this.contextMain.ShowCheckMargin = true;
             this.contextMain.ShowImageMargin = false;
-            this.contextMain.Size = new System.Drawing.Size(187, 280);
+            this.contextMain.Size = new System.Drawing.Size(187, 258);
             this.contextMain.Opening += new System.ComponentModel.CancelEventHandler(this.contextMain_Opening);
             // 
             // conStart
@@ -302,13 +321,6 @@
             this.conLog.Size = new System.Drawing.Size(186, 22);
             this.conLog.Text = "Grab Position";
             this.conLog.Click += new System.EventHandler(this.conLog_Click);
-            // 
-            // conShownData
-            // 
-            this.conShownData.DropDown = this.contextView;
-            this.conShownData.Name = "conShownData";
-            this.conShownData.Size = new System.Drawing.Size(186, 22);
-            this.conShownData.Text = "Shown Data";
             // 
             // toolStripSeparator1
             // 
@@ -477,6 +489,7 @@
         private System.Windows.Forms.ToolStripMenuItem conShowDpi;
         private System.Windows.Forms.ToolStripMenuItem conShowColor;
         private System.Windows.Forms.ToolStripMenuItem menuView;
+        private System.Windows.Forms.ToolStripMenuItem conShowResolution;
     }
 }
 
