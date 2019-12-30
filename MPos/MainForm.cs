@@ -83,6 +83,7 @@ namespace MPos
             menuMain.Renderer = new ToolStripProfessionalRenderer(colorTable);
             contextMain.Renderer = new ToolStripProfessionalRenderer(colorTable);
             contextList.Renderer = new ToolStripProfessionalRenderer(colorTable);
+            contextView.Renderer = new ToolStripProfessionalRenderer(colorTable);
             butStart.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 100, 100, 100);
             butStart.FlatAppearance.MouseOverBackColor = Color.FromArgb(100, 100, 100, 100);
         }
@@ -91,7 +92,6 @@ namespace MPos
         {
             this.TopMost = TopMost; // Ensures that TopMost works properly.
             applyCurrentTheme();
-            numSpeed.Value = CapturingInterval;
             if (Settings.Capturing) timer.Start();
             butStart.Text = Settings.Capturing ? "Stop" : "Start";
             restoreUI(dpiValue / 96.0f);
@@ -160,6 +160,7 @@ namespace MPos
             scaleFontForControl(contextMain, scaleFactor);
             scaleFontForControl(panMenu, scaleFactor);
             scaleFontForControl(contextList, scaleFactor);
+            scaleFontForControl(contextView, scaleFactor);
             scaleFontForControl(lstPositions, scaleFactor);
             scaleFontForControl(lblHelp, scaleFactor);
         }
@@ -302,6 +303,7 @@ namespace MPos
                         dropDown.ForeColor = menuMain.ForeColor;
             contextMain.ForeColor = menuMain.ForeColor;
             contextList.ForeColor = menuMain.ForeColor;
+            contextView.ForeColor = menuMain.ForeColor;
             // Explicitly set foreground color of menu items.
             foreach (ToolStripItem item in contextMain.Items)
             {
@@ -346,13 +348,17 @@ namespace MPos
             conTopmost.Checked = TopMost;
             conDarkMode.Checked = Settings.DarkMode;
             conMenuVisible.Checked = Settings.MenuVisible;
-            conPositionsVisibleMain.Checked = Settings.PositionLogVisible;
             conShowInTaskbar.Checked = ShowInTaskbar;
+            conPositionsVisibleMain.Checked = Settings.PositionLogVisible; 
+            trackOpacity.TrackBarValue = (int)(this.Opacity*100);
+        }
+
+        private void contextView_Opening(object sender, CancelEventArgs e)
+        {
             conShowScaled.Checked = Settings.ScaledVisible;
             conShowRelative.Checked = Settings.RelativeVisible;
             conShowDpi.Checked = Settings.DpiVisible;
             conShowColor.Checked = Settings.PixelColorVisible;
-            trackOpacity.TrackBarValue = (int)(this.Opacity*100);
         }
 
         private void conLog_Click(object sender, EventArgs e) => addPositionToLog();
@@ -461,8 +467,6 @@ namespace MPos
                     "MPos - Error");
             }
         }
-
-        private void numSpeed_ValueChanged(object sender, EventArgs e) => CapturingInterval = (int)numSpeed.Value;
 
         private void butStart_Click(object sender, EventArgs e)
         {

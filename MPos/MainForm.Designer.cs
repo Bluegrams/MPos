@@ -36,6 +36,12 @@
             this.conClearPositions = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.conShortcut = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuView = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextView = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.conShowScaled = new System.Windows.Forms.ToolStripMenuItem();
+            this.conShowRelative = new System.Windows.Forms.ToolStripMenuItem();
+            this.conShowDpi = new System.Windows.Forms.ToolStripMenuItem();
+            this.conShowColor = new System.Windows.Forms.ToolStripMenuItem();
             this.lstPositions = new System.Windows.Forms.ListBox();
             this.contextList = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.conPositionsCopy = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,17 +49,12 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.conCopyAll = new System.Windows.Forms.ToolStripMenuItem();
             this.panMenu = new System.Windows.Forms.Panel();
-            this.numSpeed = new System.Windows.Forms.NumericUpDown();
             this.butStart = new System.Windows.Forms.Button();
             this.panDraw = new System.Windows.Forms.Panel();
             this.contextMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.conStart = new System.Windows.Forms.ToolStripMenuItem();
             this.conLog = new System.Windows.Forms.ToolStripMenuItem();
             this.conShownData = new System.Windows.Forms.ToolStripMenuItem();
-            this.conShowScaled = new System.Windows.Forms.ToolStripMenuItem();
-            this.conShowRelative = new System.Windows.Forms.ToolStripMenuItem();
-            this.conShowDpi = new System.Windows.Forms.ToolStripMenuItem();
-            this.conShowColor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.conTopmost = new System.Windows.Forms.ToolStripMenuItem();
             this.conMenuVisible = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,9 +70,9 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lblHelp = new System.Windows.Forms.Label();
             this.menuMain.SuspendLayout();
+            this.contextView.SuspendLayout();
             this.contextList.SuspendLayout();
             this.panMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpeed)).BeginInit();
             this.contextMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +82,8 @@
             this.menuMain.BackColor = System.Drawing.Color.Transparent;
             this.menuMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuOptions});
+            this.menuOptions,
+            this.menuView});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
             this.menuMain.Padding = new System.Windows.Forms.Padding(0);
@@ -126,6 +128,56 @@
             this.conShortcut.Size = new System.Drawing.Size(184, 22);
             this.conShortcut.Text = "Configure Shortcut...";
             this.conShortcut.Click += new System.EventHandler(this.conShortcut_Click);
+            // 
+            // menuView
+            // 
+            this.menuView.DropDown = this.contextView;
+            this.menuView.Name = "menuView";
+            this.menuView.Size = new System.Drawing.Size(44, 24);
+            this.menuView.Text = "View";
+            // 
+            // contextView
+            // 
+            this.contextView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.conShowScaled,
+            this.conShowRelative,
+            this.conShowDpi,
+            this.conShowColor});
+            this.contextView.Name = "contextView";
+            this.contextView.Size = new System.Drawing.Size(201, 92);
+            this.contextView.Opening += new System.ComponentModel.CancelEventHandler(this.contextView_Opening);
+            // 
+            // conShowScaled
+            // 
+            this.conShowScaled.Name = "conShowScaled";
+            this.conShowScaled.Size = new System.Drawing.Size(200, 22);
+            this.conShowScaled.Tag = "Scaled";
+            this.conShowScaled.Text = "Dpi-Scaled Position";
+            this.conShowScaled.Click += new System.EventHandler(this.shownDataItem_Click);
+            // 
+            // conShowRelative
+            // 
+            this.conShowRelative.Name = "conShowRelative";
+            this.conShowRelative.Size = new System.Drawing.Size(200, 22);
+            this.conShowRelative.Tag = "Relative";
+            this.conShowRelative.Text = "Relative Position";
+            this.conShowRelative.Click += new System.EventHandler(this.shownDataItem_Click);
+            // 
+            // conShowDpi
+            // 
+            this.conShowDpi.Name = "conShowDpi";
+            this.conShowDpi.Size = new System.Drawing.Size(200, 22);
+            this.conShowDpi.Tag = "Dpi";
+            this.conShowDpi.Text = "Dpi Information";
+            this.conShowDpi.Click += new System.EventHandler(this.shownDataItem_Click);
+            // 
+            // conShowColor
+            // 
+            this.conShowColor.Name = "conShowColor";
+            this.conShowColor.Size = new System.Drawing.Size(200, 22);
+            this.conShowColor.Tag = "PixelColor";
+            this.conShowColor.Text = "Color at Cursor Position";
+            this.conShowColor.Click += new System.EventHandler(this.shownDataItem_Click);
             // 
             // lstPositions
             // 
@@ -183,7 +235,6 @@
             // 
             // panMenu
             // 
-            this.panMenu.Controls.Add(this.numSpeed);
             this.panMenu.Controls.Add(this.butStart);
             this.panMenu.Controls.Add(this.menuMain);
             this.panMenu.Dock = System.Windows.Forms.DockStyle.Top;
@@ -192,31 +243,6 @@
             this.panMenu.Name = "panMenu";
             this.panMenu.Size = new System.Drawing.Size(220, 24);
             this.panMenu.TabIndex = 2;
-            // 
-            // numSpeed
-            // 
-            this.numSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numSpeed.Location = new System.Drawing.Point(80, 2);
-            this.numSpeed.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numSpeed.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numSpeed.Name = "numSpeed";
-            this.numSpeed.Size = new System.Drawing.Size(60, 20);
-            this.numSpeed.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.numSpeed, "Capturing Speed (ms)");
-            this.numSpeed.Value = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
-            this.numSpeed.ValueChanged += new System.EventHandler(this.numSpeed_ValueChanged);
             // 
             // butStart
             // 
@@ -260,7 +286,7 @@
             this.contextMain.Name = "contextMain";
             this.contextMain.ShowCheckMargin = true;
             this.contextMain.ShowImageMargin = false;
-            this.contextMain.Size = new System.Drawing.Size(187, 258);
+            this.contextMain.Size = new System.Drawing.Size(187, 280);
             this.contextMain.Opening += new System.ComponentModel.CancelEventHandler(this.contextMain_Opening);
             // 
             // conStart
@@ -279,46 +305,10 @@
             // 
             // conShownData
             // 
-            this.conShownData.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.conShowScaled,
-            this.conShowRelative,
-            this.conShowDpi,
-            this.conShowColor});
+            this.conShownData.DropDown = this.contextView;
             this.conShownData.Name = "conShownData";
             this.conShownData.Size = new System.Drawing.Size(186, 22);
             this.conShownData.Text = "Shown Data";
-            // 
-            // conShowScaled
-            // 
-            this.conShowScaled.Name = "conShowScaled";
-            this.conShowScaled.Size = new System.Drawing.Size(200, 22);
-            this.conShowScaled.Tag = "Scaled";
-            this.conShowScaled.Text = "Dpi-Scaled Position";
-            this.conShowScaled.Click += new System.EventHandler(this.shownDataItem_Click);
-            // 
-            // conShowRelative
-            // 
-            this.conShowRelative.Name = "conShowRelative";
-            this.conShowRelative.Size = new System.Drawing.Size(200, 22);
-            this.conShowRelative.Tag = "Relative";
-            this.conShowRelative.Text = "Relative Position";
-            this.conShowRelative.Click += new System.EventHandler(this.shownDataItem_Click);
-            // 
-            // conShowDpi
-            // 
-            this.conShowDpi.Name = "conShowDpi";
-            this.conShowDpi.Size = new System.Drawing.Size(200, 22);
-            this.conShowDpi.Tag = "Dpi";
-            this.conShowDpi.Text = "Dpi Information";
-            this.conShowDpi.Click += new System.EventHandler(this.shownDataItem_Click);
-            // 
-            // conShowColor
-            // 
-            this.conShowColor.Name = "conShowColor";
-            this.conShowColor.Size = new System.Drawing.Size(200, 22);
-            this.conShowColor.Tag = "PixelColor";
-            this.conShowColor.Text = "Color at Cursor Position";
-            this.conShowColor.Click += new System.EventHandler(this.shownDataItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -395,6 +385,7 @@
             // conExit
             // 
             this.conExit.Name = "conExit";
+            this.conExit.ShortcutKeyDisplayString = "Esc";
             this.conExit.Size = new System.Drawing.Size(186, 22);
             this.conExit.Text = "Exit";
             this.conExit.Click += new System.EventHandler(this.conExit_Click);
@@ -437,9 +428,9 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            this.contextView.ResumeLayout(false);
             this.contextList.ResumeLayout(false);
             this.panMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numSpeed)).EndInit();
             this.contextMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -463,14 +454,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem conAbout;
         private System.Windows.Forms.ToolStripMenuItem conExit;
-        private System.Windows.Forms.ToolStripMenuItem conShowScaled;
-        private System.Windows.Forms.ToolStripMenuItem conShowRelative;
-        private System.Windows.Forms.ToolStripMenuItem conShowDpi;
-        private System.Windows.Forms.ToolStripMenuItem conShowColor;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ToolStripMenuItem conOpacity;
         private Controls.TrackBarMenuItem trackOpacity;
-        private System.Windows.Forms.NumericUpDown numSpeed;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem conMenuVisible;
         private System.Windows.Forms.ToolStripMenuItem conClearPositions;
@@ -485,6 +471,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem conPositionsVisibleMain;
         private System.Windows.Forms.Label lblHelp;
+        private System.Windows.Forms.ContextMenuStrip contextView;
+        private System.Windows.Forms.ToolStripMenuItem conShowScaled;
+        private System.Windows.Forms.ToolStripMenuItem conShowRelative;
+        private System.Windows.Forms.ToolStripMenuItem conShowDpi;
+        private System.Windows.Forms.ToolStripMenuItem conShowColor;
+        private System.Windows.Forms.ToolStripMenuItem menuView;
     }
 }
 
