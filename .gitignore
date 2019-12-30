@@ -262,3 +262,6 @@ __pycache__/
 
 # Diagnosis
 *.diagsession
+
+# Custom
+FodyWeavers.xsd

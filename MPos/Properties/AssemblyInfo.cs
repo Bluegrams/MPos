@@ -10,13 +10,14 @@ using Bluegrams.Application.Attributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bluegrams")]
 [assembly: AssemblyProduct("MPos")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © 2018-2019 Bluegrams")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: AppPortable(true)]
 [assembly: ProductWebsite("https://mpos.sourceforge.io")]
 [assembly: ProductLicense("LICENSE.txt", "BSD-3-Clause")]
+[assembly: CompanyWebsite("http://bluegrams.com", "Bluegrams")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -36,5 +37,5 @@ using Bluegrams.Application.Attributes;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.2.0.18281")]
-[assembly: AssemblyFileVersion("0.2.0.18281")]
+[assembly: AssemblyVersion("0.3.0")]
+[assembly: AssemblyFileVersion("0.3.0")]

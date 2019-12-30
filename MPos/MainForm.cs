@@ -430,12 +430,16 @@ namespace MPos
 
         private void conShortcut_Click(object sender, EventArgs e)
         {
-            HotKeyInputForm hotKeyInput = new HotKeyInputForm(Settings.ShortcutKey);
-            hotKeyInput.TopMost = this.TopMost;
-            if (hotKeyInput.ShowDialog() == DialogResult.OK)
+            // remove current shortcut during key selection
+            var oldKeys = Settings.ShortcutKey;
+            setNewHotKey(Keys.None);
+            HotKeyInputForm hotKeyInput = new HotKeyInputForm(oldKeys);
+            if (hotKeyInput.ShowDialog(this) == DialogResult.OK)
             {
                 setNewHotKey(hotKeyInput.SelectedKeys);
             }
+            // restore previous shortcut
+            else setNewHotKey(oldKeys);
         }
 
         /// <summary>
@@ -445,6 +449,8 @@ namespace MPos
         {
             hotKey?.Dispose();
             Settings.ShortcutKey = keys;
+            if (keys == Keys.None)
+                return;
             KeyCombination combination = (KeyCombination)keys;
             try
             {
@@ -503,6 +509,7 @@ namespace MPos
         private void lstPositions_VisibleChanged(object sender, EventArgs e)
         {
             if (lstPositions.Visible && lstPositions.Items.Count < 1) lblHelp.Visible = true;
+            else lblHelp.Visible = false;
         }
 
         private void lstPositions_Click(object sender, EventArgs e)

@@ -54,7 +54,7 @@ Read [the changelog](https://github.com/bluegrams/MPos/blob/master/Changelog.md)
 
 ## Feedback and Support
 
-_Please leave a feedback on [Sourceforge](https://sourceforge.net/p/mpos/reviews) or on [AlternativeTo](https://alternativeto.net/software/mpos/). Thank you!_
+_Please leave a feedback on [Sourceforge](https://sourceforge.net/p/mpos/reviews) or on [AlternativeTo](https://alternativeto.net/software/mpos--mouse-position/). Thank you!_
 
 Places to get help:
 
