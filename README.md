@@ -48,6 +48,17 @@ MPos requires **Windows 8.1 or newer** and **.NET Framework 4.6** or newer.
 MPos does not support Windows versions prior to 8.1 because its DPI scaling
 related features depend on API methods introduced with this version.
 
+#### Installation
+
+- Download the [latest release from SourceForge](https://sourceforge.net/projects/mpos/files/)
+
+or
+
+- Install from [Chocolatey](https://chocolatey.org):
+```
+choco install mpos
+```
+
 ## Version History
 
 Read [the changelog](https://github.com/bluegrams/MPos/blob/master/Changelog.md) to see changes in each version.

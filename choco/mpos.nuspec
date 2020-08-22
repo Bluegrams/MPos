@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- == PACKAGE SPECIFIC SECTION == -->
+    <id>mpos</id>
+    <version>0.3.0</version>
+    <owners>alxnull</owners>
+    <!-- ============================== -->
+
+    <!-- == SOFTWARE SPECIFIC SECTION == -->
+    <title>MPos - Mouse Position</title>
+    <authors>alxnull</authors>
+    <projectUrl>https://sf.net/p/mpos</projectUrl>
+    <iconUrl>https://gitcdn.xyz/repo/Bluegrams/MPos/master/img/icon.png</iconUrl>
+    <copyright>© 2020 Bluegrams</copyright>
+    <licenseUrl>https://github.com/bluegrams/MPos/blob/master/LICENSE.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/bluegrams/MPos</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/bluegrams/MPos/issues</bugTrackerUrl>
+    <tags>mpos mouse cursor cursor-position mouse-pointer windows mouse-tracker dpi</tags>
+    <summary>Mouse position tracker and DPI information for Windows 10.</summary>
+    <description>MPos is a minimalistic and easy to use tool to track the current position of the cursor on the screen.
+    MPos especially considers High-DPI monitors and DPI scaling of Windows 10.
+    The tracked cursor position is provided in physical/ unscaled Windows pixels and in coordinates scaled by DPI-virtualization.
+    The tool also provides information about the DPI scaling and the raw/ physical DPI of the current monitor.</description>
+    <releaseNotes>https://github.com/bluegrams/MPos/blob/master/Changelog.md</releaseNotes>
+    <!-- =============================== -->      
+
+    <dependencies>
+      <dependency id="dotnetfx" version="4.6.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- this section controls what actually gets packaged into the Chocolatey package -->
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
