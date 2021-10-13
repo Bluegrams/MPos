@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
@@ -24,8 +24,8 @@ namespace MPos
         // The currently used DPI value for per-monitor scaling.
         private int dpiValue = 96;
         // Parameters for text in main panel.
+        private float realFontSize = 9;  // settings font size scaled by dpi config
         private int lineHeight = 24;
-        private float paintFontSize = 9;
 
         public Settings Settings { get; set; }
         /// <summary>
@@ -99,6 +99,12 @@ namespace MPos
             restoreUI(dpiValue / 96.0f);
             setNewHotKey(Settings.ShortcutKey);
             updateChecker.CheckForUpdates(UpdateNotifyMode.Auto);
+            Settings.Changed += settings_Changed;
+        }
+        private void settings_Changed(object sender, EventArgs e)
+        {
+            applyCurrentTheme();
+            restoreUI(dpiValue / 96.0f);
         }
 
         protected override void WndProc(ref Message m)
@@ -183,10 +189,10 @@ namespace MPos
         /// <param name="factor">Scaling relative to the design scaling (96 dpi).</param>
         private void restoreUI(float factor)
         {
-            lineHeight = (int)Math.Ceiling(factor * 24);
-            paintFontSize = (int)(factor * 9);
+            lineHeight = (int)Math.Ceiling(factor * (Settings.FontSize + 15));
+            realFontSize = (int)(factor * Settings.FontSize);
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine("Line height: {0}; font size: {1}", lineHeight, paintFontSize);
+            System.Diagnostics.Debug.WriteLine("Line height: {0}; font size: {1}", lineHeight, realFontSize);
 #endif
             int height = 2 * lineHeight;
             if (Settings.MenuVisible) height += panMenu.Height;
@@ -197,6 +203,7 @@ namespace MPos
             if (Settings.ScreenResolutionVisible) height += lineHeight;
             if (Settings.PixelColorVisible) height += lineHeight;
             this.Height = height;
+            this.Width = (int)(220 * (Settings.FontSize / 9.0));
             panMenu.Visible = Settings.MenuVisible;
             lstPositions.Visible = Settings.PositionLogVisible;
             panDraw.Invalidate();
@@ -231,7 +238,7 @@ namespace MPos
             int paddLeft = 5, paddTop = 3;
             int w3 = panDraw.Width / 3 + paddLeft;
             Graphics g = e.Graphics;
-            using (Font f = new Font("Segoe UI", paintFontSize))
+            using (Font f = new Font(Settings.FontFamilyName, realFontSize))
             using (Brush b = new SolidBrush(Settings.DarkMode ? Color.White : Color.Black))
             {
                 g.DrawString("Physical", f, b, paddLeft, paddTop);
@@ -391,6 +398,7 @@ namespace MPos
             panMenu.Visible = Settings.MenuVisible;
             // Remove or add space used for main menu.
             this.Height += Settings.MenuVisible ? +panMenu.Height : -panMenu.Height;
+            panDraw.Invalidate();
         }
 
         private void conShowInTaskbar_Click(object sender, EventArgs e)
@@ -443,6 +451,12 @@ namespace MPos
         {
             lstPositions.Items.Clear();
             lblHelp.Visible = true;
+        }
+
+        private void conCustomize_Click(object sender, EventArgs e)
+        {
+            CustomizeForm customizeForm = new CustomizeForm(Settings);
+            customizeForm.Show(this);
         }
 
         private void conShortcut_Click(object sender, EventArgs e)
@@ -499,8 +513,10 @@ namespace MPos
             contextList.Enabled = lstPositions.SelectedIndex > -1;
         }
 
-        // Move label showing shortcut together with list box.
+        // Move & resize label showing shortcut together with list box.
         private void lstPositions_LocationChanged(object sender, EventArgs e) => lblHelp.Location = lstPositions.Location;
+
+        private void lstPositions_SizeChanged(object sender, EventArgs e) => lblHelp.Size = lstPositions.Size;
 
         private void conCopyAll_Click(object sender, EventArgs e)
         {

@@ -46,5 +46,23 @@ namespace MPos
         /// Specifies the global shortcut keys to copy/ log the current position.
         /// </summary>
         public Keys ShortcutKey { get; set; } = Keys.Control | Keys.Alt | Keys.X;
+        /// <summary>
+        /// Specifies the font family used for drawing the main data display.
+        /// </summary>
+        public string FontFamilyName { get; set; } = "Segoe UI";
+        /// <summary>
+        /// Specifies the font size used for drawing the main data display.
+        /// </summary>
+        public int FontSize { get; set; } = 9;
+
+        /// <summary>
+        /// An event that allows to explicitly inform users of this class about changes.
+        /// </summary>
+        public event EventHandler Changed;
+
+        /// <summary>
+        /// Invoke the Changed event.
+        /// </summary>
+        public void InvokeChanged() => Changed?.Invoke(this, EventArgs.Empty);
     }
 }

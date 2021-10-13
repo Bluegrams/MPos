@@ -35,6 +35,7 @@
             this.conPositionsVisible = new System.Windows.Forms.ToolStripMenuItem();
             this.conClearPositions = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.conCustomize = new System.Windows.Forms.ToolStripMenuItem();
             this.conShortcut = new System.Windows.Forms.ToolStripMenuItem();
             this.menuView = new System.Windows.Forms.ToolStripMenuItem();
             this.contextView = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -70,6 +71,7 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lblHelp = new System.Windows.Forms.Label();
+            this.conCustomizeMain = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.contextView.SuspendLayout();
             this.contextList.SuspendLayout();
@@ -98,6 +100,7 @@
             this.conPositionsVisible,
             this.conClearPositions,
             this.toolStripSeparator3,
+            this.conCustomize,
             this.conShortcut});
             this.menuOptions.Name = "menuOptions";
             this.menuOptions.Size = new System.Drawing.Size(61, 24);
@@ -122,6 +125,13 @@
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
+            // 
+            // conCustomize
+            // 
+            this.conCustomize.Name = "conCustomize";
+            this.conCustomize.Size = new System.Drawing.Size(184, 22);
+            this.conCustomize.Text = "Customize...";
+            this.conCustomize.Click += new System.EventHandler(this.conCustomize_Click);
             // 
             // conShortcut
             // 
@@ -210,6 +220,7 @@
             this.lstPositions.TabIndex = 1;
             this.lstPositions.Click += new System.EventHandler(this.lstPositions_Click);
             this.lstPositions.LocationChanged += new System.EventHandler(this.lstPositions_LocationChanged);
+            this.lstPositions.SizeChanged += new System.EventHandler(this.lstPositions_SizeChanged);
             this.lstPositions.VisibleChanged += new System.EventHandler(this.lstPositions_VisibleChanged);
             // 
             // contextList
@@ -299,13 +310,14 @@
             this.conShowInTaskbar,
             this.conDarkMode,
             this.conOpacity,
+            this.conCustomizeMain,
             this.toolStripSeparator2,
             this.conAbout,
             this.conExit});
             this.contextMain.Name = "contextMain";
             this.contextMain.ShowCheckMargin = true;
             this.contextMain.ShowImageMargin = false;
-            this.contextMain.Size = new System.Drawing.Size(187, 258);
+            this.contextMain.Size = new System.Drawing.Size(187, 302);
             this.contextMain.Opening += new System.ComponentModel.CancelEventHandler(this.contextMain_Opening);
             // 
             // conStart
@@ -421,6 +433,13 @@
             this.lblHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblHelp.Visible = false;
             // 
+            // conCustomizeMain
+            // 
+            this.conCustomizeMain.Name = "conCustomizeMain";
+            this.conCustomizeMain.Size = new System.Drawing.Size(186, 22);
+            this.conCustomizeMain.Text = "Customize...";
+            this.conCustomizeMain.Click += new System.EventHandler(this.conCustomize_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -490,6 +509,8 @@
         private System.Windows.Forms.ToolStripMenuItem conShowColor;
         private System.Windows.Forms.ToolStripMenuItem menuView;
         private System.Windows.Forms.ToolStripMenuItem conShowResolution;
+        private System.Windows.Forms.ToolStripMenuItem conCustomize;
+        private System.Windows.Forms.ToolStripMenuItem conCustomizeMain;
     }
 }
 

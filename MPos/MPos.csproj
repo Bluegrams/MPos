@@ -71,6 +71,12 @@
     <Compile Include="Controls\TrackBarMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomizeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomizeForm.Designer.cs">
+      <DependentUpon>CustomizeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     <None Include="Properties\app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CustomizeForm.resx">
+      <DependentUpon>CustomizeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
