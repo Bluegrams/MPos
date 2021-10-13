@@ -86,20 +86,22 @@ namespace MPos
             return Color.FromArgb(color.R, color.G, color.B);
         }
 
-        public override string ToString()
+        public override string ToString() => ToString(new Settings());
+
+        public string ToString(Settings settings)
         {
-            return String.Format("Physical: {0}; " +
-                "Scaled: {1}; " +
-                "Relative: {2}; " +
-                "Dpi: {3}; " +
-                "Raw Dpi: {4}; " +
-                "Dpi Scaling: {5}; " +
-                "Dpi Ratio: {6}; " +
-                "Screen Resolution: {7}; " +
-                "Pixel Color: {8}",
-                PhysicalPosition, ScaledPosition, RelativePosition,
-                Dpi, RawDpi, DpiScaling, DpiRawRatio,
-                ScreenResolution, ColorTranslator.ToHtml(PixelColor));
+            String s = $"Physical: {PhysicalPosition}";
+            if (settings.ScaledVisible)
+                s += $"; Scaled: {ScaledPosition}";
+            if (settings.RelativeVisible)
+                s += $"; Relative: {RelativePosition}";
+            if (settings.DpiVisible)
+                s += $"; Dpi: {Dpi}; Raw Dpi: {RawDpi}; Dpi Ratio: {DpiRawRatio}";
+            if (settings.ScreenResolutionVisible)
+                s += $"; Screen Resolution: {ScreenResolution}";
+            if (settings.PixelColorVisible)
+                s += $"; Pixel Color: {ColorTranslator.ToHtml(PixelColor)}";
+            return s;
         }
     }
 }

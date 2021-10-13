@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
@@ -86,6 +86,8 @@ namespace MPos
             contextView.Renderer = new ToolStripProfessionalRenderer(colorTable);
             butStart.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 100, 100, 100);
             butStart.FlatAppearance.MouseOverBackColor = Color.FromArgb(100, 100, 100, 100);
+            lstPositions.DrawMode = DrawMode.OwnerDrawFixed;
+            lstPositions.DrawItem += lstPositions_DrawItem;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -96,7 +98,7 @@ namespace MPos
             butStart.Text = Settings.Capturing ? "Stop" : "Start";
             restoreUI(dpiValue / 96.0f);
             setNewHotKey(Settings.ShortcutKey);
-            updateChecker.CheckForUpdates();
+            updateChecker.CheckForUpdates(UpdateNotifyMode.Auto);
         }
 
         protected override void WndProc(ref Message m)
@@ -313,6 +315,20 @@ namespace MPos
             this.Invalidate();
         }
 
+        private void lstPositions_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || e.Index >= lstPositions.Items.Count)
+                return;
+
+            e.DrawBackground();
+            using (Brush brush = new SolidBrush(e.ForeColor))
+            {
+                e.Graphics.DrawString(((PositionData)lstPositions.Items[e.Index]).ToString(Settings),
+                    e.Font, brush, e.Bounds, StringFormat.GenericDefault);
+            }
+            e.DrawFocusRectangle();
+        }
+
         /// <summary>
         /// Adds the current position to the position log list.
         /// </summary>
@@ -325,7 +341,7 @@ namespace MPos
             lstPositions.SelectedIndex = lstPositions.Items.Count - 1;
             // Show position list box if not visible.
             if (!Settings.PositionLogVisible) conPositionsVisible.PerformClick();
-            var text = Position.ToString().Replace("; ", Environment.NewLine);
+            var text = Position.ToString(Settings).Replace("; ", Environment.NewLine);
             Clipboard.SetText(text);
         }
 
@@ -364,6 +380,7 @@ namespace MPos
             typeof(Settings).GetProperty(prop).SetValue(Settings, !menuItem.Checked);
             this.Height += menuItem.Checked ? -lineHeight : +lineHeight;
             panDraw.Invalidate();
+            lstPositions.Invalidate();
         }
 
         private void conTopmost_Click(object sender, EventArgs e) => TopMost = !TopMost;
@@ -396,7 +413,7 @@ namespace MPos
         {
             var resMan = new ResourceManager(this.GetType());
             var img = ((Icon)resMan.GetObject("$this.Icon")).ToBitmap();
-            AboutForm aboutForm = new AboutForm(img);
+            AboutForm aboutForm = new AboutForm(img, showLanguageSelection: false);
             aboutForm.UpdateChecker = updateChecker;
             aboutForm.AccentColor = Color.FromArgb(16, 16, 16);
             aboutForm.TopMost = this.TopMost;
@@ -487,14 +504,14 @@ namespace MPos
 
         private void conCopyAll_Click(object sender, EventArgs e)
         {
-            var items = from object item in lstPositions.Items
-                        select item.ToString();
+            var items = from PositionData item in lstPositions.Items
+                        select item.ToString(Settings);
             Clipboard.SetText(String.Join("\n", items));
         }
 
         private void conPositionsCopy_Click(object sender, EventArgs e)
         {
-            var text = lstPositions.SelectedItem.ToString().Replace("; ", Environment.NewLine);
+            var text = ((PositionData)lstPositions.SelectedItem).ToString(Settings).Replace("; ", Environment.NewLine);
             Clipboard.SetText(text);
         }
 
