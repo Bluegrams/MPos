@@ -65,13 +65,13 @@
             this.conDarkMode = new System.Windows.Forms.ToolStripMenuItem();
             this.conOpacity = new System.Windows.Forms.ToolStripMenuItem();
             this.trackOpacity = new MPos.Controls.TrackBarMenuItem();
+            this.conCustomizeMain = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.conAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.conExit = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lblHelp = new System.Windows.Forms.Label();
-            this.conCustomizeMain = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.contextView.SuspendLayout();
             this.contextList.SuspendLayout();
@@ -110,25 +110,26 @@
             // conPositionsVisible
             // 
             this.conPositionsVisible.Name = "conPositionsVisible";
-            this.conPositionsVisible.Size = new System.Drawing.Size(184, 22);
+            this.conPositionsVisible.Size = new System.Drawing.Size(221, 22);
             this.conPositionsVisible.Text = "Show Position Log";
             this.conPositionsVisible.Click += new System.EventHandler(this.conPositionsVisible_Click);
             // 
             // conClearPositions
             // 
             this.conClearPositions.Name = "conClearPositions";
-            this.conClearPositions.Size = new System.Drawing.Size(184, 22);
+            this.conClearPositions.Size = new System.Drawing.Size(221, 22);
             this.conClearPositions.Text = "Clear Position Log";
             this.conClearPositions.Click += new System.EventHandler(this.conClearPositions_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(218, 6);
             // 
             // conCustomize
             // 
             this.conCustomize.Name = "conCustomize";
+            this.conCustomize.ShortcutKeyDisplayString = "Ctrl+,";
             this.conCustomize.Size = new System.Drawing.Size(184, 22);
             this.conCustomize.Text = "Customize...";
             this.conCustomize.Click += new System.EventHandler(this.conCustomize_Click);
@@ -136,6 +137,7 @@
             // conShortcut
             // 
             this.conShortcut.Name = "conShortcut";
+            this.conShortcut.ShortcutKeyDisplayString = "";
             this.conShortcut.Size = new System.Drawing.Size(184, 22);
             this.conShortcut.Text = "Configure Shortcut...";
             this.conShortcut.Click += new System.EventHandler(this.conShortcut_Click);
@@ -317,7 +319,7 @@
             this.contextMain.Name = "contextMain";
             this.contextMain.ShowCheckMargin = true;
             this.contextMain.ShowImageMargin = false;
-            this.contextMain.Size = new System.Drawing.Size(187, 302);
+            this.contextMain.Size = new System.Drawing.Size(187, 280);
             this.contextMain.Opening += new System.ComponentModel.CancelEventHandler(this.contextMain_Opening);
             // 
             // conStart
@@ -393,6 +395,14 @@
             this.trackOpacity.TrackBarValue = 10;
             this.trackOpacity.ValueChanged += new System.EventHandler<MPos.Controls.TrackBarEventArgs>(this.trackOpacity_ValueChanged);
             // 
+            // conCustomizeMain
+            // 
+            this.conCustomizeMain.Name = "conCustomizeMain";
+            this.conCustomizeMain.ShortcutKeyDisplayString = "Ctrl+,";
+            this.conCustomizeMain.Size = new System.Drawing.Size(186, 22);
+            this.conCustomizeMain.Text = "Customize...";
+            this.conCustomizeMain.Click += new System.EventHandler(this.conCustomize_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -432,13 +442,6 @@
             this.lblHelp.Text = "No shortcut.";
             this.lblHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblHelp.Visible = false;
-            // 
-            // conCustomizeMain
-            // 
-            this.conCustomizeMain.Name = "conCustomizeMain";
-            this.conCustomizeMain.Size = new System.Drawing.Size(186, 22);
-            this.conCustomizeMain.Text = "Customize...";
-            this.conCustomizeMain.Click += new System.EventHandler(this.conCustomize_Click);
             // 
             // MainForm
             // 

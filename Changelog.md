@@ -1,5 +1,9 @@
 # MPos Changelog
 
+### v.0.4 (2021-10)
+- **New:** "Customize" window: configure font family and font size
+- **Changed:** Only log visible position data
+
 ### v.0.3 (2020-01)
 - **New:** Added screen resolution of current screen.
 - **New:** Re-show grabbed position data from log.

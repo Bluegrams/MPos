@@ -135,6 +135,9 @@ namespace MPos
                     case Keys.T:
                         conTopmost.PerformClick();
                         break;
+                    case Keys.Oemcomma:
+                        conCustomize.PerformClick();
+                        break;
                 }
             }
             else if (e.KeyCode == Keys.Menu) conMenuVisible.PerformClick();

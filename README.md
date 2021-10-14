@@ -1,7 +1,9 @@
 # MPos - Mouse Position Tracker
 
-[![GitHub License](https://img.shields.io/github/license/bluegrams/mpos.svg)](https://github.com/bluegrams/MPos/blob/master/LICENSE.txt)
+
+[![Updates](https://img.shields.io/badge/updates-RSS-ffa500?logo=rss)](https://sourceforge.net/p/mpos/news/feed.rss)
 [![GitHub tag](https://img.shields.io/github/tag/bluegrams/mpos.svg)](https://github.com/bluegrams/MPos)
+[![GitHub License](https://img.shields.io/github/license/bluegrams/mpos.svg)](https://github.com/bluegrams/MPos/blob/master/LICENSE.txt)
 [![Download MPos - Mouse Position](https://img.shields.io/sourceforge/dm/mpos.svg)](https://sourceforge.net/projects/mpos/files/)
 
 > Mouse position tracker and DPI information for Windows 10
@@ -36,11 +38,11 @@ about the DPI scaling and the raw/ physical DPI of the current monitor.
 
 - Log of last grabbed cursor positions for easy copying
 
-- Set opacity and dark mode
+- Configure appearance, opacity and dark mode
 
 - Fully portable with no installation needed
 
-## Setup and Usage
+## Setup
 
 #### Requirements
 
@@ -48,7 +50,7 @@ MPos requires **Windows 8.1 or newer** and **.NET Framework 4.6** or newer.
 MPos does not support Windows versions prior to 8.1 because its DPI scaling
 related features depend on API methods introduced with this version.
 
-#### Installation
+#### Get MPos
 
 - Download the [latest release from SourceForge](https://sourceforge.net/projects/mpos/files/)
 

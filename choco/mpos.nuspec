@@ -4,7 +4,7 @@
   <metadata>
     <!-- == PACKAGE SPECIFIC SECTION == -->
     <id>mpos</id>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <owners>alxnull</owners>
     <!-- ============================== -->
 
@@ -13,7 +13,7 @@
     <authors>alxnull</authors>
     <projectUrl>https://sf.net/p/mpos</projectUrl>
     <iconUrl>https://gitcdn.xyz/repo/Bluegrams/MPos/master/img/icon.png</iconUrl>
-    <copyright>© 2020 Bluegrams</copyright>
+    <copyright>© 2018-2021 Bluegrams</copyright>
     <licenseUrl>https://github.com/bluegrams/MPos/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/bluegrams/MPos</projectSourceUrl>
