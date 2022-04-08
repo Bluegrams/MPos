@@ -12,11 +12,12 @@
     <title>MPos - Mouse Position</title>
     <authors>alxnull</authors>
     <projectUrl>https://sf.net/p/mpos</projectUrl>
-    <iconUrl>https://gitcdn.xyz/repo/Bluegrams/MPos/master/img/icon.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/Bluegrams/MPos/master/img/icon.png</iconUrl>
     <copyright>© 2018-2021 Bluegrams</copyright>
     <licenseUrl>https://github.com/bluegrams/MPos/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/bluegrams/MPos</projectSourceUrl>
+	<packageSourceUrl>https://github.com/bluegrams/MPos</packageSourceUrl>
     <bugTrackerUrl>https://github.com/bluegrams/MPos/issues</bugTrackerUrl>
     <tags>mpos mouse cursor cursor-position mouse-pointer windows mouse-tracker dpi</tags>
     <summary>Mouse position tracker and DPI information for Windows 10.</summary>

@@ -110,21 +110,21 @@
             // conPositionsVisible
             // 
             this.conPositionsVisible.Name = "conPositionsVisible";
-            this.conPositionsVisible.Size = new System.Drawing.Size(221, 22);
+            this.conPositionsVisible.Size = new System.Drawing.Size(184, 22);
             this.conPositionsVisible.Text = "Show Position Log";
             this.conPositionsVisible.Click += new System.EventHandler(this.conPositionsVisible_Click);
             // 
             // conClearPositions
             // 
             this.conClearPositions.Name = "conClearPositions";
-            this.conClearPositions.Size = new System.Drawing.Size(221, 22);
+            this.conClearPositions.Size = new System.Drawing.Size(184, 22);
             this.conClearPositions.Text = "Clear Position Log";
             this.conClearPositions.Click += new System.EventHandler(this.conClearPositions_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(218, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
             // 
             // conCustomize
             // 
@@ -215,6 +215,7 @@
             this.lstPositions.ContextMenuStrip = this.contextList;
             this.lstPositions.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lstPositions.FormattingEnabled = true;
+            this.lstPositions.IntegralHeight = false;
             this.lstPositions.Location = new System.Drawing.Point(0, 168);
             this.lstPositions.Margin = new System.Windows.Forms.Padding(0);
             this.lstPositions.Name = "lstPositions";
@@ -445,7 +446,8 @@
             // 
             // MainForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(220, 224);
             this.Controls.Add(this.lblHelp);

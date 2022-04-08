@@ -30,16 +30,16 @@ namespace MPos
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chkDarkMode = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.trackOpacity = new System.Windows.Forms.TrackBar();
-            this.numFontSize = new System.Windows.Forms.NumericUpDown();
-            this.cmbFont = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmbFont = new System.Windows.Forms.ComboBox();
+            this.numFontSize = new System.Windows.Forms.NumericUpDown();
+            this.trackOpacity = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkDarkMode = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFontSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -58,36 +58,33 @@ namespace MPos
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Appearance";
             // 
-            // chkDarkMode
+            // label3
             // 
-            this.chkDarkMode.AutoSize = true;
-            this.chkDarkMode.Location = new System.Drawing.Point(9, 27);
-            this.chkDarkMode.Name = "chkDarkMode";
-            this.chkDarkMode.Size = new System.Drawing.Size(79, 17);
-            this.chkDarkMode.TabIndex = 0;
-            this.chkDarkMode.Text = "Dark Mode";
-            this.chkDarkMode.UseVisualStyleBackColor = true;
-            this.chkDarkMode.CheckedChanged += new System.EventHandler(this.chkDarkMode_CheckedChanged);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 130);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Font Size";
             // 
-            // label1
+            // label2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 60);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Opacity";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 104);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Font Family";
             // 
-            // trackOpacity
+            // cmbFont
             // 
-            this.trackOpacity.Location = new System.Drawing.Point(72, 50);
-            this.trackOpacity.Maximum = 100;
-            this.trackOpacity.Name = "trackOpacity";
-            this.trackOpacity.Size = new System.Drawing.Size(132, 45);
-            this.trackOpacity.TabIndex = 2;
-            this.trackOpacity.TickFrequency = 10;
-            this.trackOpacity.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackOpacity.Scroll += new System.EventHandler(this.trackOpacity_Scroll);
+            this.cmbFont.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFont.FormattingEnabled = true;
+            this.cmbFont.Location = new System.Drawing.Point(72, 101);
+            this.cmbFont.Name = "cmbFont";
+            this.cmbFont.Size = new System.Drawing.Size(132, 21);
+            this.cmbFont.TabIndex = 4;
+            this.cmbFont.SelectedIndexChanged += new System.EventHandler(this.cmbFont_SelectedIndexChanged);
             // 
             // numFontSize
             // 
@@ -112,38 +109,41 @@ namespace MPos
             0});
             this.numFontSize.ValueChanged += new System.EventHandler(this.numFontSize_ValueChanged);
             // 
-            // cmbFont
+            // trackOpacity
             // 
-            this.cmbFont.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFont.FormattingEnabled = true;
-            this.cmbFont.Location = new System.Drawing.Point(72, 101);
-            this.cmbFont.Name = "cmbFont";
-            this.cmbFont.Size = new System.Drawing.Size(132, 21);
-            this.cmbFont.TabIndex = 4;
-            this.cmbFont.SelectedIndexChanged += new System.EventHandler(this.cmbFont_SelectedIndexChanged);
+            this.trackOpacity.Location = new System.Drawing.Point(72, 50);
+            this.trackOpacity.Maximum = 100;
+            this.trackOpacity.Name = "trackOpacity";
+            this.trackOpacity.Size = new System.Drawing.Size(132, 45);
+            this.trackOpacity.TabIndex = 2;
+            this.trackOpacity.TickFrequency = 10;
+            this.trackOpacity.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.trackOpacity.Scroll += new System.EventHandler(this.trackOpacity_Scroll);
             // 
-            // label2
+            // label1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 104);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Font Family";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 60);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Opacity";
             // 
-            // label3
+            // chkDarkMode
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 130);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Font Size";
+            this.chkDarkMode.AutoSize = true;
+            this.chkDarkMode.Location = new System.Drawing.Point(9, 27);
+            this.chkDarkMode.Name = "chkDarkMode";
+            this.chkDarkMode.Size = new System.Drawing.Size(79, 17);
+            this.chkDarkMode.TabIndex = 0;
+            this.chkDarkMode.Text = "Dark Mode";
+            this.chkDarkMode.UseVisualStyleBackColor = true;
+            this.chkDarkMode.CheckedChanged += new System.EventHandler(this.chkDarkMode_CheckedChanged);
             // 
             // CustomizeForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(234, 211);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -154,8 +154,8 @@ namespace MPos
             this.Load += new System.EventHandler(this.CustomizeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFontSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -51,6 +51,7 @@ namespace MPos
             initControls();
             this.KeyPreview = true;
             this.KeyDown += MainForm_KeyDown;
+            this.DpiChanged += MainForm_DpiChanged;
             // Create and start the timer.
             timer = new Timer() { Interval = 50 };
             timer.Tick += Timer_Tick;
@@ -96,7 +97,7 @@ namespace MPos
             applyCurrentTheme();
             if (Settings.Capturing) timer.Start();
             butStart.Text = Settings.Capturing ? "Stop" : "Start";
-            restoreUI(dpiValue / 96.0f);
+            restoreUI();
             setNewHotKey(Settings.ShortcutKey);
             updateChecker.CheckForUpdates(UpdateNotifyMode.Auto);
             Settings.Changed += settings_Changed;
@@ -104,26 +105,7 @@ namespace MPos
         private void settings_Changed(object sender, EventArgs e)
         {
             applyCurrentTheme();
-            restoreUI(dpiValue / 96.0f);
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            switch (m.Msg)
-            {
-                // --- Check of DPI of monitor changed ---
-                // WM_DPICHANGED = 0x02E0 (>= Win 8.1)
-                case 0x02E0:
-                    float factor = (short)m.WParam / (float)dpiValue;
-                    dpiValue = (short)m.WParam;
-#if DEBUG
-                    System.Diagnostics.Debug.WriteLine("DPI changed: {0}; {1}", dpiValue, factor);
-#endif
-                    this.Scale(new SizeF(factor, factor));
-                    restoreUI(dpiValue / 96.0f);
-                    break;
-            }
-            base.WndProc(ref m);          
+            restoreUI();
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -153,50 +135,22 @@ namespace MPos
             hotKey?.Dispose();
         }
 
-        #region Scaling
-
-        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
         {
-            base.ScaleControl(factor, specified);
-            trackOpacity.Scale(factor);
-            scaleFonts(factor.Height);
+            dpiValue = e.DeviceDpiNew;
+            System.Diagnostics.Debug.WriteLine("DPI changed: {0}", dpiValue);
+            restoreUI();
         }
 
         /// <summary>
-        /// Manually scales the fonts of several controls.
+        /// Rebuilds the UI according to the current settings and the currently set display DPI.
         /// </summary>
-        private void scaleFonts(float scaleFactor)
+        private void restoreUI()
         {
-            // Scale fonts for some controls.
-            scaleFontForControl(contextMain, scaleFactor);
-            scaleFontForControl(panMenu, scaleFactor);
-            scaleFontForControl(contextList, scaleFactor);
-            scaleFontForControl(contextView, scaleFactor);
-            scaleFontForControl(lstPositions, scaleFactor);
-            scaleFontForControl(lblHelp, scaleFactor);
-        }
-
-        private void scaleFontForControl(Control control, float factor)
-        {
-            control.Font = new Font(control.Font.FontFamily,
-                   control.Font.Size * factor,
-                   control.Font.Style);
-            if (control is NumericUpDown) return;
-            foreach (Control child in control.Controls)
-                scaleFontForControl(child, factor);
-        }
-
-        /// <summary>
-        /// Rebuilds the UI according to the current settings and the given scaling factor.
-        /// </summary>
-        /// <param name="factor">Scaling relative to the design scaling (96 dpi).</param>
-        private void restoreUI(float factor)
-        {
+            float factor = dpiValue / 96.0f;
             lineHeight = (int)Math.Ceiling(factor * (Settings.FontSize + 15));
             realFontSize = (int)(factor * Settings.FontSize);
-#if DEBUG
             System.Diagnostics.Debug.WriteLine("Line height: {0}; font size: {1}", lineHeight, realFontSize);
-#endif
             int height = 2 * lineHeight;
             if (Settings.MenuVisible) height += panMenu.Height;
             if (Settings.PositionLogVisible) height += lstPositions.Height;
@@ -206,13 +160,11 @@ namespace MPos
             if (Settings.ScreenResolutionVisible) height += lineHeight;
             if (Settings.PixelColorVisible) height += lineHeight;
             this.Height = height;
-            this.Width = (int)(220 * (Settings.FontSize / 9.0));
             panMenu.Visible = Settings.MenuVisible;
             lstPositions.Visible = Settings.PositionLogVisible;
+            lstPositions.ItemHeight = (int)(factor * 13);
             panDraw.Invalidate();
         }
-
-        #endregion
 
         private void Timer_Tick(object sender, EventArgs e) => updatePosition();
 
@@ -388,8 +340,7 @@ namespace MPos
             var menuItem = (ToolStripMenuItem)sender;
             string prop = (string)menuItem.Tag + "Visible";
             typeof(Settings).GetProperty(prop).SetValue(Settings, !menuItem.Checked);
-            this.Height += menuItem.Checked ? -lineHeight : +lineHeight;
-            panDraw.Invalidate();
+            restoreUI();
             lstPositions.Invalidate();
         }
 
@@ -399,9 +350,7 @@ namespace MPos
         {
             Settings.MenuVisible = !Settings.MenuVisible;
             panMenu.Visible = Settings.MenuVisible;
-            // Remove or add space used for main menu.
-            this.Height += Settings.MenuVisible ? +panMenu.Height : -panMenu.Height;
-            panDraw.Invalidate();
+            restoreUI();
         }
 
         private void conShowInTaskbar_Click(object sender, EventArgs e)
@@ -446,8 +395,7 @@ namespace MPos
         {
             Settings.PositionLogVisible = !Settings.PositionLogVisible;
             lstPositions.Visible = Settings.PositionLogVisible;
-            // Remove or add space used for the list box.
-            this.Height += Settings.PositionLogVisible ? +lstPositions.Height : -lstPositions.Height;
+            restoreUI();
         }
 
         private void conClearPositions_Click(object sender, EventArgs e)
