@@ -31,10 +31,6 @@ namespace MPos
         /// </summary>
         public bool DarkMode { get; set; } = false;
         /// <summary>
-        /// Determines of the main menu is visible.
-        /// </summary>
-        public bool MenuVisible { get; set; } = true;
-        /// <summary>
         /// Determines if the list box containing logged positions is visible.
         /// </summary>
         public bool PositionLogVisible { get; set; } = false;
@@ -53,7 +49,12 @@ namespace MPos
         /// <summary>
         /// Specifies the font size used for drawing the main data display.
         /// </summary>
-        public int FontSize { get; set; } = 9;
+        public int FontSize { get; set; } = 12;
+
+        public string DataFormatPoint { get; set; } = "{name}: X={x},Y={y}";
+        public string DataFormatDpi { get; set; } = "Dpi: {dpi}; Raw Dpi: {rawDpi}; Dpi Ratio: {dpiRatio}";
+        public string DataFormatResolution { get; set; } = "{name}: {x}x{y}";
+        public string DataFormatColor { get; set; } = "Pixel Color: {value}";
 
         /// <summary>
         /// An event that allows to explicitly inform users of this class about changes.

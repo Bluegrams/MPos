@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace MPos
@@ -90,18 +91,47 @@ namespace MPos
 
         public string ToString(Settings settings)
         {
-            String s = $"Physical: {PhysicalPosition}";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(formatPoint(settings, "Physical", PhysicalPosition));
+            //String s = $"Physical: {PhysicalPosition}";
             if (settings.ScaledVisible)
-                s += $"; Scaled: {ScaledPosition}";
+                sb.Append("; ").Append(formatPoint(settings, "Scaled", ScaledPosition));
+            //s += $"; Scaled: {ScaledPosition}";
             if (settings.RelativeVisible)
-                s += $"; Relative: {RelativePosition}";
+                sb.Append("; ").Append(formatPoint(settings, "Relative", RelativePosition));
+            //s += $"; Relative: {RelativePosition}";
             if (settings.DpiVisible)
-                s += $"; Dpi: {Dpi}; Raw Dpi: {RawDpi}; Dpi Ratio: {DpiRawRatio}";
+                sb.Append("; ").Append(formatDpi(settings));
+            //s += $"; Dpi: {Dpi}; Raw Dpi: {RawDpi}; Dpi Ratio: {DpiRawRatio}";
             if (settings.ScreenResolutionVisible)
-                s += $"; Screen Resolution: {ScreenResolution}";
+                sb.Append("; ").Append(formatResolution(settings, "Screen Resolution", ScreenResolution));
+            //s += $"; Screen Resolution: {ScreenResolution}";
             if (settings.PixelColorVisible)
-                s += $"; Pixel Color: {ColorTranslator.ToHtml(PixelColor)}";
-            return s;
+                sb.Append("; ").Append(formatColor(settings, PixelColor));
+                //s += $"; Pixel Color: {ColorTranslator.ToHtml(PixelColor)}";
+            return sb.ToString();
         }
+
+        private StringBuilder formatPoint(Settings settings, string name, Point p)
+            => new StringBuilder(settings.DataFormatPoint)
+                .Replace("{name}", name)
+                .Replace("{x}", p.X.ToString())
+                .Replace("{y}", p.Y.ToString());
+
+        private StringBuilder formatDpi(Settings settings)
+            => new StringBuilder(settings.DataFormatDpi)
+                .Replace("{dpi}", Dpi.ToString())
+                .Replace("{rawDpi}", RawDpi.ToString())
+                .Replace("{dpiRatio}", DpiRawRatio.ToString());
+
+        private StringBuilder formatResolution(Settings settings, string name, Size s)
+            => new StringBuilder(settings.DataFormatResolution)
+                .Replace("{name}", name)
+                .Replace("{x}", s.Width.ToString())
+                .Replace("{y}", s.Height.ToString());
+
+        private StringBuilder formatColor(Settings settings, Color c)
+            => new StringBuilder(settings.DataFormatColor)
+                .Replace("{value}", ColorTranslator.ToHtml(c));
     }
 }

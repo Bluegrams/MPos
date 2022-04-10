@@ -17,12 +17,11 @@ namespace MPos
         private WinFormsWindowManager manager;
         private IUpdateChecker updateChecker;
         private Timer timer;
+        private CustomizeForm customizeForm;
         // Global shortcut
         private GlobalHotKey hotKey;
         // Custom color table to support different themes.
         private CustomColorTable colorTable;
-        // The currently used DPI value for per-monitor scaling.
-        private int dpiValue = 96;
         // Parameters for text in main panel.
         private float realFontSize = 9;  // settings font size scaled by dpi config
         private int lineHeight = 24;
@@ -55,9 +54,6 @@ namespace MPos
             // Create and start the timer.
             timer = new Timer() { Interval = 50 };
             timer.Tick += Timer_Tick;
-            // Set initial scaling.
-            dpiValue = WinApi.GetMonitorDpiFromPoint((WinPoint)this.Location, MonitorDpiType.EFFECTIVE_DPI);
-            this.Scale(new SizeF(dpiValue / 96.0f, dpiValue / 96.0f));
             panDraw.Focus();
         }
 
@@ -81,12 +77,9 @@ namespace MPos
             panDraw.Paint += PanDraw_Paint;
             // Adjust appearance of some controls (esp. for theming).
             colorTable = new CustomColorTable(Settings.DarkMode);
-            menuMain.Renderer = new ToolStripProfessionalRenderer(colorTable);
             contextMain.Renderer = new ToolStripProfessionalRenderer(colorTable);
             contextList.Renderer = new ToolStripProfessionalRenderer(colorTable);
             contextView.Renderer = new ToolStripProfessionalRenderer(colorTable);
-            butStart.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 100, 100, 100);
-            butStart.FlatAppearance.MouseOverBackColor = Color.FromArgb(100, 100, 100, 100);
             lstPositions.DrawMode = DrawMode.OwnerDrawFixed;
             lstPositions.DrawItem += lstPositions_DrawItem;
         }
@@ -96,7 +89,6 @@ namespace MPos
             this.TopMost = TopMost; // Ensures that TopMost works properly.
             applyCurrentTheme();
             if (Settings.Capturing) timer.Start();
-            butStart.Text = Settings.Capturing ? "Stop" : "Start";
             restoreUI();
             setNewHotKey(Settings.ShortcutKey);
             updateChecker.CheckForUpdates(UpdateNotifyMode.Auto);
@@ -117,12 +109,15 @@ namespace MPos
                     case Keys.T:
                         conTopmost.PerformClick();
                         break;
+                    case Keys.L:
+                        conPositionsVisibleMain.PerformClick();
+                        break;
                     case Keys.Oemcomma:
-                        conCustomize.PerformClick();
+                        conCustomizeMain.PerformClick();
                         break;
                 }
             }
-            else if (e.KeyCode == Keys.Menu) conMenuVisible.PerformClick();
+            else if (e.KeyCode == Keys.F5) conStart.PerformClick();
             else if (e.KeyCode == Keys.F1) conAbout.PerformClick();
             else if (e.KeyCode == Keys.Escape) conExit.PerformClick();
         }
@@ -137,8 +132,7 @@ namespace MPos
 
         private void MainForm_DpiChanged(object sender, DpiChangedEventArgs e)
         {
-            dpiValue = e.DeviceDpiNew;
-            System.Diagnostics.Debug.WriteLine("DPI changed: {0}", dpiValue);
+            System.Diagnostics.Debug.WriteLine("DPI changed: {0}", DeviceDpi);
             restoreUI();
         }
 
@@ -147,23 +141,24 @@ namespace MPos
         /// </summary>
         private void restoreUI()
         {
-            float factor = dpiValue / 96.0f;
+            float factor = DeviceDpi / 96.0f;
             lineHeight = (int)Math.Ceiling(factor * (Settings.FontSize + 15));
             realFontSize = (int)(factor * Settings.FontSize);
-            System.Diagnostics.Debug.WriteLine("Line height: {0}; font size: {1}", lineHeight, realFontSize);
-            int height = 2 * lineHeight;
-            if (Settings.MenuVisible) height += panMenu.Height;
+            System.Diagnostics.Debug.WriteLine("Factor: {0}; line height: {1}; font size: {2}", factor, lineHeight, realFontSize);
+            int height = lineHeight;
             if (Settings.PositionLogVisible) height += lstPositions.Height;
             if (Settings.RelativeVisible) height += lineHeight;
             if (Settings.ScaledVisible) height += lineHeight;
-            if (Settings.DpiVisible) height += lineHeight;
+            if (Settings.DpiVisible) height += 2 * lineHeight;
             if (Settings.ScreenResolutionVisible) height += lineHeight;
             if (Settings.PixelColorVisible) height += lineHeight;
+            this.MinimumSize = Size.Empty;
             this.Height = height;
-            panMenu.Visible = Settings.MenuVisible;
+            this.Width = (int)(220 * factor);
             lstPositions.Visible = Settings.PositionLogVisible;
-            lstPositions.ItemHeight = (int)(factor * 13);
+            lstPositions.ItemHeight = (int)(factor * Settings.FontSize + 6);
             panDraw.Invalidate();
+            lstPositions.Invalidate();
         }
 
         private void Timer_Tick(object sender, EventArgs e) => updatePosition();
@@ -193,7 +188,7 @@ namespace MPos
             int paddLeft = 5, paddTop = 3;
             int w3 = panDraw.Width / 3 + paddLeft;
             Graphics g = e.Graphics;
-            using (Font f = new Font(Settings.FontFamilyName, realFontSize))
+            using (Font f = new Font(Settings.FontFamilyName, realFontSize, FontStyle.Regular, GraphicsUnit.Pixel))
             using (Brush b = new SolidBrush(Settings.DarkMode ? Color.White : Color.Black))
             {
                 g.DrawString("Physical", f, b, paddLeft, paddTop);
@@ -250,15 +245,9 @@ namespace MPos
             lstPositions.BackColor = BackColor;
             colorTable.Dark = Settings.DarkMode;
             // --- Set foreground colors of controls ---
-            menuMain.ForeColor = Settings.DarkMode ? Color.White : Color.Black;
-            // Explicitly set foreground color of menu items.
-            foreach (var item in menuMain.Items)
-                if (item is ToolStripMenuItem menuItem)
-                    foreach (ToolStripItem dropDown in menuItem.DropDownItems)
-                        dropDown.ForeColor = menuMain.ForeColor;
-            contextMain.ForeColor = menuMain.ForeColor;
-            contextList.ForeColor = menuMain.ForeColor;
-            contextView.ForeColor = menuMain.ForeColor;
+            contextMain.ForeColor = Settings.DarkMode ? Color.White : Color.Black;
+            contextList.ForeColor = contextMain.ForeColor;
+            contextView.ForeColor = contextMain.ForeColor;
             // Explicitly set foreground color of menu items.
             foreach (ToolStripItem item in contextMain.Items)
             {
@@ -272,8 +261,7 @@ namespace MPos
                     }
                 }
             }
-            butStart.ForeColor = menuMain.ForeColor;
-            lstPositions.ForeColor = menuMain.ForeColor;
+            lstPositions.ForeColor = contextMain.ForeColor;
             this.Invalidate();
         }
 
@@ -283,10 +271,11 @@ namespace MPos
                 return;
 
             e.DrawBackground();
+            using (Font f = new Font(Settings.FontFamilyName, realFontSize, FontStyle.Regular, GraphicsUnit.Pixel))
             using (Brush brush = new SolidBrush(e.ForeColor))
             {
                 e.Graphics.DrawString(((PositionData)lstPositions.Items[e.Index]).ToString(Settings),
-                    e.Font, brush, e.Bounds, StringFormat.GenericDefault);
+                    f, brush, e.Bounds, StringFormat.GenericDefault);
             }
             e.DrawFocusRectangle();
         }
@@ -302,7 +291,7 @@ namespace MPos
             // Select newly added element.
             lstPositions.SelectedIndex = lstPositions.Items.Count - 1;
             // Show position list box if not visible.
-            if (!Settings.PositionLogVisible) conPositionsVisible.PerformClick();
+            if (!Settings.PositionLogVisible) conPositionsVisibleMain.PerformClick();
             var text = Position.ToString(Settings).Replace("; ", Environment.NewLine);
             Clipboard.SetText(text);
         }
@@ -316,7 +305,6 @@ namespace MPos
         {
             conTopmost.Checked = TopMost;
             conDarkMode.Checked = Settings.DarkMode;
-            conMenuVisible.Checked = Settings.MenuVisible;
             conShowInTaskbar.Checked = ShowInTaskbar;
             conPositionsVisibleMain.Checked = Settings.PositionLogVisible; 
             trackOpacity.TrackBarValue = (int)(this.Opacity*100);
@@ -341,17 +329,9 @@ namespace MPos
             string prop = (string)menuItem.Tag + "Visible";
             typeof(Settings).GetProperty(prop).SetValue(Settings, !menuItem.Checked);
             restoreUI();
-            lstPositions.Invalidate();
         }
 
         private void conTopmost_Click(object sender, EventArgs e) => TopMost = !TopMost;
-
-        private void conMenuVisible_Click(object sender, EventArgs e)
-        {
-            Settings.MenuVisible = !Settings.MenuVisible;
-            panMenu.Visible = Settings.MenuVisible;
-            restoreUI();
-        }
 
         private void conShowInTaskbar_Click(object sender, EventArgs e)
         {
@@ -386,11 +366,6 @@ namespace MPos
 
         #region Top Menu
 
-        private void menuOptions_DropDownOpening(object sender, EventArgs e)
-        {
-            conPositionsVisible.Checked = Settings.PositionLogVisible;
-        }
-
         private void conPositionsVisible_Click(object sender, EventArgs e)
         {
             Settings.PositionLogVisible = !Settings.PositionLogVisible;
@@ -406,8 +381,19 @@ namespace MPos
 
         private void conCustomize_Click(object sender, EventArgs e)
         {
-            CustomizeForm customizeForm = new CustomizeForm(Settings);
-            customizeForm.Show(this);
+            if (customizeForm == null)
+            {
+                customizeForm = new CustomizeForm(Settings);
+                customizeForm.FormClosed += (o, args) =>
+                {
+                    customizeForm = null;
+                };
+                customizeForm.Show(this);
+            }
+            else
+            {
+                customizeForm.Focus();
+            }
         }
 
         private void conShortcut_Click(object sender, EventArgs e)
@@ -453,7 +439,6 @@ namespace MPos
         {
             Settings.Capturing = !Settings.Capturing;
             timer.Enabled = Settings.Capturing;
-            butStart.Text = Settings.Capturing ? "Stop" : "Start";
         }
         #endregion
 
