@@ -1,5 +1,10 @@
 # MPos Changelog
 
+### v.0.5 (2022-04)
+- **New:** Add customization of position log data format.
+- **Changed:** Moved main menu items into context menus.
+- **Fixed:** UI issues with display scaling & high-DPI monitors.
+
 ### v.0.4 (2021-10)
 - **New:** "Customize" window: configure font family and font size
 - **Changed:** Only log visible position data

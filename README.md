@@ -46,8 +46,8 @@ about the DPI scaling and the raw/ physical DPI of the current monitor.
 
 #### Requirements
 
-MPos requires **Windows 8.1 or newer** and **.NET Framework 4.6** or newer.
-MPos does not support Windows versions prior to 8.1 because its DPI scaling
+MPos requires **Windows 10 or newer** and **.NET Framework 4.8** or newer.
+MPos does not support Windows versions prior to 10 because its DPI scaling
 related features depend on API methods introduced with this version.
 
 #### Get MPos
@@ -67,7 +67,7 @@ Read [the changelog](https://github.com/bluegrams/MPos/blob/master/Changelog.md)
 
 ## Feedback and Support
 
-_Please leave a feedback on [Sourceforge](https://sourceforge.net/p/mpos/reviews) or on [AlternativeTo](https://alternativeto.net/software/mpos--mouse-position/). Thank you!_
+_Please leave a feedback on [Sourceforge](https://sourceforge.net/p/mpos/reviews) and recommend MPos if you like it. Thank you!_
 
 Places to get help:
 
